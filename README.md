@@ -1,14 +1,17 @@
 # LeetCode → GitHub Auto-Sync
 
-Automatically syncs your accepted LeetCode submissions to this repo, every 30
-minutes, using a scheduled GitHub Actions workflow. No third-party extension,
-no broad GitHub permissions, no server to host.
+Automatically syncs your accepted LeetCode submissions to this repo, every 6
+hours, using a scheduled GitHub Actions workflow. No third-party extension,
+no broad GitHub permissions, no server to host. Commits are authored under
+your own GitHub identity, so they count toward your contribution graph.
 
 ## Why this is safe
 
 - Runs entirely inside **your own repo's GitHub Actions**, using the
   repo-scoped built-in `GITHUB_TOKEN` — it can only write to *this* repo,
   nothing else.
+- Commits are made under your own GitHub username and noreply email (not a
+  generic bot identity), so they show up as your contributions.
 - Your LeetCode session is stored as an encrypted **repository secret**,
   never exposed in logs or to any third party.
 - All code is here for you to read — nothing is a black box.
@@ -52,7 +55,7 @@ automatically-provided `GITHUB_TOKEN`, scoped only to this repo.
 1. Go to the **Actions** tab of your repo, enable workflows if prompted.
 2. Click into "LeetCode Sync" → **Run workflow** to trigger it manually the
    first time and confirm it works.
-3. After that, it'll run automatically every 30 minutes via the cron
+3. After that, it'll run automatically every 6 hours via the cron
    schedule, and only commit when there's something new to sync.
 
 ## How it works
@@ -69,13 +72,13 @@ automatically-provided `GITHUB_TOKEN`, scoped only to this repo.
 
 ## Notes / limitations
 
-- Not instant — solutions show up within 30 minutes (or less, depending on
+- Not instant — solutions show up within 6 hours (or less, depending on
   when in the cycle you solved it). You can lower the cron interval (e.g.
-  `*/10 * * * *` for every 10 minutes) if you want it tighter, keeping in
-  mind GitHub Actions free-tier minute limits.
+  `0 */6 * * *` → `*/30 * * * *` for every 30 minutes) if you want it
+  tighter, keeping in mind GitHub Actions free-tier minute limits.
 - LeetCode's GraphQL API is unofficial/undocumented, so it could change
   without notice — if the workflow starts failing, check LeetCode hasn't
   altered the schema.
-- Only your last ~20 accepted submissions are checked each run. If you go
-  more than 20 submissions without the workflow running, older ones could
-  be missed — 30 min polling comfortably avoids this for normal usage.
+- Only your last ~20 accepted submissions are checked each run. If you
+  solve more than 20 problems within a single 6-hour window, older ones
+  could be missed — unlikely for normal usage, but worth knowing.

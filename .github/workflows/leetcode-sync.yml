@@ -2,8 +2,8 @@ name: LeetCode Sync
 
 on:
   schedule:
-    # Runs every 30 minutes. GitHub may delay this slightly under load.
-    - cron: "*/30 * * * *"
+    # Runs every 6 hours. GitHub may delay this slightly under load.
+    - cron: "0 */6 * * *"
   workflow_dispatch: {}  # lets you trigger it manually from the Actions tab
 
 permissions:
@@ -34,8 +34,8 @@ jobs:
       - name: Commit and push new solutions
         if: steps.sync.outputs.new_count != '0'
         run: |
-          git config user.name "leetcode-sync-bot"
-          git config user.email "actions@users.noreply.github.com"
+          git config user.name "LalitNarayan824"
+          git config user.email "185046237+LalitNarayan824@users.noreply.github.com"
           git add solutions synced.json
           git commit -m "Sync ${{ steps.sync.outputs.new_count }} new LeetCode solution(s)"
           git push

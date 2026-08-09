@@ -1,63 +1,42 @@
 class Solution {
 public:
     string removeDuplicateLetters(string s) {
-        // lastIndex and taken
-
-        vector<int> lastIndex(26 , -1);
-        vector<bool> taken(26 , false);
+        // last index
+        // stack
         int n = s.size();
+        vector<int> last(26, -1);
+        vector<bool> taken(26, 0);
+        stack<char> st;
+
+        // init last index
         for(int i=0;i<n;i++){
-            lastIndex[s[i]-'a']=i;
+            last[s[i]-'a']=i;
         }
 
-        string res="";
-        int index =0;
-        while(true){
-            if(index>=n) break;
 
-            // stack empty condition
-            if(res.size()==0){
-                res.push_back(s[index]);
-                taken[s[index]-'a']= true;
-                index++;
-                continue;
-            }
-
-            // already present in stack condition
-            if(taken[s[index]-'a']){
-                index++;
-                continue;
-            }
-
-            // at this point the char is not present in the stack and stack is not empty
-
-            // if lexographically smaller than top of stack
-            if(res.back() < s[index]){
-                res.push_back(s[index]);
-                taken[s[index]-'a'] = true;
-                index++;
+        //building the stack
+        for(int i=0;i<n;i++){
+            if(taken[s[i]-'a']) continue;
+            while( !st.empty() && (s[i]-'a')<(st.top()-'a') && last[st.top()-'a']>i ){
+                taken[st.top()-'a']=0;
+                st.pop();
 
             }
-            else{
-            // if lexographically greater than top of stack
-                if(lastIndex[res.back()-'a']> index){
-                    taken[res.back()-'a']=false;
-                    res.pop_back();
-                }
-                else{
-                    res.push_back(s[index]);
-                    taken[s[index]-'a'] = true;
-                    index++;
-                }
-            }
 
-
-
-
-
-
+            if(taken[s[i]-'a']==false){
+                taken[s[i]-'a']=true;
+                st.push(s[i]);
+            } 
+                
         }
 
-        return res;
+        string ans="";
+        while(!st.empty()){
+            ans.push_back(st.top());st.pop();
+        }
+
+        reverse(ans.begin(), ans.end());
+
+        return ans;
     }
 };
